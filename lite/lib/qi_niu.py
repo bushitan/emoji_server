@@ -92,6 +92,11 @@ class QiNiu():
         #     print 'error',e
         #     return False
 
+    def getBase64Token(self,file_name):
+        q = qiniu.Auth(qiniu_access_key, qiniu_secret_key)
+        key = file_name
+        token = q.upload_token(qiniu_bucket_name,key = key )
+        return token,key
 # q = QiNiu()
 # q.put("hx_","a.jpg",r"C:\lab\git\hua_xun\huaxun_server\static\admin\img\gis\move_vertex_off.png")
 # q.put("hx_","a.jpg",r"C:\lab\git\hua_xun\huaxun_server\media\1.png")

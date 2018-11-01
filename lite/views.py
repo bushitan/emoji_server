@@ -88,4 +88,26 @@ class ImageGetList( ListView):
 		except Exception,e :
 			return MESSAGE_RESPONSE_NET_ERROR( self.__class__.__name__ ,e )
 
+import base64
+# 微信支付
+class UploadGetToken( ListView):
+	def get(self, request, *args, **kwargs):
+		try:
+
+			_user = User.objects.get(session = request.GET.get('session',""))
+			# _style = request.GET.get('style',"")
+			# _suffix = request.GET.get('suffix',"")  #后缀
+			_suffix = "jpg"
+			#按照当前时间和用户生成名字
+			_file_name = "emoji_" + str(_user.id) + "_" + datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S") + "." + _suffix
+
+			_qn = QiNiu()
+			token,key =_qn.getBase64Token(_file_name)
+			_dict = {
+				"token":token,
+				"key": base64.b64encode(key),
+			}
+			return MESSAGE_RESPONSE_SUCCESS(_dict)
+		except Exception,e :
+			return MESSAGE_RESPONSE_NET_ERROR( self.__class__.__name__ ,e )
 
